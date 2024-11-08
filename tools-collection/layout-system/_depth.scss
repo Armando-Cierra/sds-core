@@ -1,0 +1,25 @@
+// Layering (z-index)
+//
+// All values are available through the `$sds_indexes()` map, which allows us to
+// keep all z-index values in a single location and helps prevent layering conflicts
+// as a project scales.
+
+$sds_indexes: (
+  below: -1,
+  default: 0,
+  toolbar: 200,
+  app-nav: 100,
+  modal-overlay: 1000,
+  modal-container: 1100
+) !default;
+
+// $index - : The desired value from the `$sds_indexes()` map
+
+@mixin sds-index($index) {
+  @if not map-has-key($sds_indexes, $index) {
+    @error 'The index: `#{$index}` is not a valid index. Available indexes are:' map-keys($sds_indexes);
+  }
+  $selected-sds_index: map-get($sds_indexes, $index);
+
+  z-index: $selected-sds_index;
+}

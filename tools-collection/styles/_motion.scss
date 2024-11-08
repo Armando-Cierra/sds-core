@@ -1,0 +1,27 @@
+// -------------------------------------
+// Motion
+// -------------------------------------
+
+$sds_easings: (
+  standard: cubic-bezier(0.25, 0, 0, 1),
+  exit: cubic-bezier(0.25, 0, 1, 1)
+) !default;
+
+$sds_times: (
+  interactive: 0.24s,
+  enviromental: 0.64s
+) !default;
+
+@function sds-transition($easing, $time) {
+  @if not map-has-key($sds_easings, $easing) {
+    @error 'The index: `#{$index}` is not a valid index. Available indexes are:' map-keys($sds_easings);
+  }
+  $selected-sds_easing: map-get($sds_easings, $easing);
+
+  @if not map-has-key($sds_times, $time) {
+    @error 'The index: `#{$index}` is not a valid index. Available indexes are:' map-keys($sds_times);
+  }
+  $selected-sds_time: map-get($sds_times, $time);
+
+  @return ($selected-sds_easing $selected-sds_time);
+}

@@ -1,0 +1,52 @@
+//Desktops First Screen breakpoints
+
+$sds-screen-xs: 37.4375rem;
+$sds-screen-sm: 47.9375rem;
+$sds-screen-md: 63.9375rem;
+$sds-screen-lg: 79.9375rem;
+$sds-screen-xl: 99.9375rem;
+
+@mixin sds-screen($range) {
+  //--------------------
+  //Desktop First Approach
+  //--------------------
+
+  //From 0 to 599px
+  @if $range == xs {
+    @media screen and (max-width: $sds-screen-xs) {
+      @content;
+    }
+  }
+  //From 600px to 767px
+  @else if $range == sm {
+    @media screen and (max-width: $sds-screen-sm) {
+      @content;
+    }
+  }
+  //From 768px to 1023px
+  @else if $range == md {
+    @media screen and (max-width: $sds-screen-md) {
+      @content;
+    }
+  }
+  //From 1024px to 1279px
+  @else if $range == lg {
+    @media screen and (max-width: $sds-screen-lg) {
+      @content;
+    }
+  }
+  //From 1080px to 1599px
+  @else if $range == xl {
+    @media screen and (max-width: $sds-screen-lg) {
+      @content;
+    }
+  }
+
+  //--------------------
+  //Error
+  //--------------------
+
+  @else {
+    @error '"#{$range}" is not a valid grid range. Available grid ranges are: xs, xs-mobile, sm, sm-mobile md, md-mobile, lg, lg-mobile';
+  }
+}

@@ -1,0 +1,42 @@
+@mixin sds-flex(
+  $justify-type: flex-start,
+  $align-type: flex-start,
+  $direction: row
+) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify-type;
+  align-items: $align-type;
+}
+
+@mixin sds-inline-flex(
+  $justify-type: flex-start,
+  $align-type: flex-start,
+  $direction: row
+) {
+  display: inline-flex;
+  flex-direction: $direction;
+  justify-content: $justify-type;
+  align-items: $align-type;
+}
+
+@mixin sds-grid($columns, $gap: 0) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  grid-gap: $gap;
+}
+
+@mixin sds-custom-grid($columns, $gap: 0) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-gap: $gap;
+}
+
+@mixin sds-grid-column($start, $end) {
+  grid-column-start: $start;
+  grid-column-end: $end;
+}
+
+@mixin sds-grid-column-reset {
+  grid-column: auto;
+}

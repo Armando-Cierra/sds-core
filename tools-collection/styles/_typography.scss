@@ -1,0 +1,97 @@
+// Size Scale
+$sds_type_sizes: (
+  12: 0.75rem,
+  14: 0.875rem,
+  16: 1rem,
+  20: 1.25rem,
+  24: 1.5rem,
+  36: 2rem,
+  48: 2.7rem
+) !default;
+
+// Weights
+$sds_type_weights: (
+  base: 400,
+  semi: 600,
+  bold: 750
+) !default;
+
+// Typesets
+//
+// Typesets are the main way of styling base text properties in Sipster. They are
+// preconfigured combinations from the `$sds_type_sizes()` and `$sds_type_weights()`
+// maps, and can be added to your elements by using the `@sds-typeset()` mixin.
+
+$sds_typesets: (
+  mouse: (
+    font-size: map-get($sds_type_sizes, 12),
+    line-height: 1.25rem
+  ),
+  sm-caps: (
+    font-size: map-get($sds_type_sizes, 12),
+    font-weight: map-get($sds_type_weights, semi),
+    letter-spacing: 0.04em,
+    line-height: 1rem,
+    text-transform: uppercase
+  ),
+  body: (
+    font-size: map-get($sds_type_sizes, 14),
+    line-height: 1.25rem
+  ),
+  body-lg: (
+    font-size: map-get($sds_type_sizes, 16),
+    line-height: 1.5rem
+  ),
+  heading-2: (
+    font-size: map-get($sds_type_sizes, 20),
+    line-height: 1.75rem
+  ),
+  heading-1: (
+    font-size: map-get($sds_type_sizes, 24),
+    line-height: 2rem
+  ),
+  title-2: (
+    font-size: map-get($sds_type_sizes, 36),
+    line-height: 2.75rem
+  ),
+  title-1: (
+    font-size: map-get($sds_type_sizes, 48),
+    line-height: 3.75rem
+  )
+) !default;
+
+@mixin return-prop-val($map) {
+  @each $name, $value in $map {
+    #{$name}: $value;
+  }
+}
+
+// The following mixin returns a specified typeset + optionally defined font-weight.
+//
+// $name - : the name of a valid typeset from the `$sds_typesets()` map
+// $weight - : allows you to optionally set an available font-weight from
+// the `$sds_type_weights` map (defaults to 'base')
+
+@mixin sds-typeset($name, $weight: 'base') {
+  // If $name is not a valid $sds-typeset, return error message
+  @if not map-has-key($sds_typesets, $name) {
+    @error 'The typeset: `#{$name}` is not a valid typeset. Available typesets are:' map-keys($sds_typesets);
+  }
+
+  // set the selected typeset as a variable for easier use
+  $selected-typeset: map-get($sds_typesets, $name);
+
+  // If $weight is explicitly defined but contains an invalid value, return error message
+  @if $weight != 'base' and not map-has-key($sds_type_weights, $weight) {
+    @error 'The weight: `#{$weight}` is not a valid font-weight. Available font-weights are:' map-keys($sds_type_weights);
+  }
+
+  // If $weight is explicitly defined AND it's an available $sds_type_weight, include the font-weight declaration in conjunction with the typeset properties
+  @if $weight != 'base' and map-has-key($sds_type_weights, $weight) {
+    font-weight: map-get($sds_type_weights, #{$weight});
+    @include return-prop-val($selected-typeset);
+  } @else {
+    // Otherwise, just include the desired typeset properties with the default 'base' font-weight
+    @include return-prop-val($selected-typeset);
+  }
+}

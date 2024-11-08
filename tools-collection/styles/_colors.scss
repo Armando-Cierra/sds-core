@@ -1,0 +1,212 @@
+$colors: (
+  neutral: (
+    base: #737373,
+    tones: (
+      05: #f1f1f1,
+      10: #e3e3e3,
+      20: #c7c7c7,
+      30: #ababab,
+      40: #8f8f8f,
+      60: #5c5c5c,
+      70: #454545,
+      80: #2e2e2e,
+      90: #1c1c1c,
+      100: #0e0e0e
+    )
+  ),
+  grey: (
+    base: #909099,
+    tones: (
+      05: #f4f4f5,
+      10: #e9e9eb,
+      20: #d3d3d6,
+      30: #bcbcc2,
+      40: #a6a6ad,
+      60: #73737a,
+      70: #56565c,
+      80: #3a3a3d,
+      90: #232325,
+      100: #111112
+    )
+  ),
+  blue: (
+    base: #3579f5,
+    tones: (
+      05: #ebf2fe,
+      10: #d7e4fd,
+      20: #aec9fb,
+      30: #86aff9,
+      40: #5d94f7,
+      60: #2a61c4,
+      70: #204993,
+      80: #153062,
+      90: #0d1d3b,
+      100: #060f1d
+    )
+  ),
+  green: (
+    base: #2ed022,
+    tones: (
+      05: #eafae9,
+      10: #d5f6d3,
+      20: #abeca7,
+      30: #82e37a,
+      40: #58d94e,
+      60: #25a61b,
+      70: #1c7d14,
+      80: #12530e,
+      90: #0b3208,
+      100: #061904
+    )
+  ),
+  indigo: (
+    base: #4d5fd6,
+    tones: (
+      05: #edeffb,
+      10: #dbdff7,
+      20: #b8bfef,
+      30: #949fe6,
+      40: #717fde,
+      60: #3e4cab,
+      70: #2e3980,
+      80: #1f2656,
+      90: #121733,
+      100: #090b1a
+    )
+  ),
+  lime: (
+    base: #93db24,
+    tones: (
+      05: #f4fbe9,
+      10: #eaf8d3,
+      20: #d5f1a7,
+      30: #bfe97c,
+      40: #aae250,
+      60: #77af1d,
+      70: #598316,
+      80: #3c580e,
+      90: #243509,
+      100: #121a04
+    )
+  ),
+  orange: (
+    base: #fd720f,
+    tones: (
+      05: #fff1e7,
+      10: #ffe3cf,
+      20: #fec79f,
+      30: #feaa6f,
+      40: #fd8e3f,
+      60: #ca5b0c,
+      70: #984409,
+      80: #652e06,
+      90: #3d1b04,
+      100: #1e0e02
+    )
+  ),
+  pink: (
+    base: #ef276b,
+    tones: (
+      05: #fde9f0,
+      10: #fcd4e1,
+      20: #f9a9c4,
+      30: #f57da6,
+      40: #f25289,
+      60: #bf1f56,
+      70: #8f1740,
+      80: #60102b,
+      90: #39091a,
+      100: #1d050d
+    )
+  ),
+  purple: (
+    base: #8f35f1,
+    tones: (
+      05: #f4ebfe,
+      10: #e9d7fc,
+      20: #d2aef9,
+      30: #bc86f7,
+      40: #a55df4,
+      60: #722ac1,
+      70: #562091,
+      80: #391560,
+      90: #220d3a,
+      100: #11061d
+    )
+  ),
+  red: (
+    base: #f01010,
+    tones: (
+      05: #fee7e7,
+      10: #fccfcf,
+      20: #f99f9f,
+      30: #f67070,
+      40: #f34040,
+      60: #c00d0d,
+      70: #900a0a,
+      80: #600606,
+      90: #3a0404,
+      100: #1d0202
+    )
+  ),
+  teal: (
+    base: #36b6b4,
+    tones: (
+      05: #ebf8f8,
+      10: #d7f0f0,
+      20: #afe2e1,
+      30: #86d3d2,
+      40: #5ec5c3,
+      60: #2b9290,
+      70: #206d6c,
+      80: #164948,
+      90: #0d2c2b,
+      100: #061616
+    )
+  ),
+  yellow: (
+    base: #f8a506,
+    tones: (
+      05: #fef6e6,
+      10: #feedcd,
+      20: #fcdb9b,
+      30: #fbc96a,
+      40: #f9b738,
+      60: #c68405,
+      70: #956304,
+      80: #634202,
+      90: #3c2801,
+      100: #1e1401
+    )
+  ),
+  black: #000000,
+  white: #ffffff
+);
+
+@function sds-color($baseColor, $tone: 50) {
+  $colorData: map-get($colors, $baseColor);
+
+  // Checks if the selected color exists
+  @if not $colorData {
+    @error "Color '#{$baseColor}' is not a valid sds-color. Available colors are: #{map-keys($colors)}";
+    @return null;
+  }
+
+  @if (type-of($colorData) == 'map') {
+    $tones: map-get($colorData, tones);
+
+    // Checking valid tones
+    $validTones: '05', 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
+    @if not index($validTones, $tone) {
+      @error "Tone '#{$tone}' is not a valid sds-color tone. Available tones are: #{$validTones}.";
+      @return null;
+    }
+
+    // Selecting the color by its tone
+    $selectedColor: map-get($tones, $tone);
+
+    @return if($tone == 50, map-get($colorData, base), $selectedColor);
+  } @else {
+    @return $colorData;
+  }
+}
